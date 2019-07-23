@@ -31,5 +31,3 @@ while player1.life_points > 0 && player2.life_points > 0
   player2.show_state
   puts "\n"
 end
-
-binding.pry
