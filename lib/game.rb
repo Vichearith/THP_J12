@@ -1,6 +1,3 @@
-require 'bundler'
-Bundler.require
-
 class Game
   attr_accessor :human_player, :enemies, :players_left, :enemies_in_sight
   $name = ["Howard" , "Johnson" , "Wallace" , "Mills" , "Erin" , "Kenneth" , "Mirian" , "Josefa" , "Bette" , "Roselee" , "Maida" , "Whitney" , "Kareem" , "Jerrold" , "Marc" , "Elmira" , "Elisa" , "Lachelle" , "Cheree" , "Cecile" , "Page" , "Mertie" , "Jackie" , "Brendan"]
@@ -44,14 +41,14 @@ class Game
   end
 
   def menu_choice(action)
-    @enemies_in_sight.each_with_index do |enemie, index|
-      if action == "a"
-        @human_player.search_weapon
-      elsif action == "s"
-        @human_player.search_health_pack
-      elsif action == "#{index}"
-        @human_player.attacks(enemie)
-      end
+    if action == "a"
+      @human_player.search_weapon
+    elsif action == "s"
+      @human_player.search_health_pack
+    elsif action.to_i.between?(0, @enemies_in_sight.count-1)
+      @human_player.attacks(@enemies_in_sight[action.to_i])
+    else
+      puts "Vous n'avez réalisé aucune action"
     end
   end
 
@@ -68,9 +65,9 @@ class Game
   end
 
   def new_players_in_sight
-    if @enemies_in_sight.count == @players_left
+    if @players_left == @enemies_in_sight.count
       puts "Tous les joueurs sont déjà en vue"
-    elsif @enemies_in_sight.count < @players_left
+    elsif @players_left > @enemies_in_sight.count
       dice = rand(1..6)
       if dice == 1
         puts "Aucun nouvel ennemie arrive"
@@ -78,9 +75,14 @@ class Game
         @enemies_in_sight << Player.new($name.sample)
         puts "Un nouvel ennemie arrive"
       elsif dice >= 5
-        numerous_enemies = 2
-        numerous_enemies.times do |i|
-        @enemies_in_sight << Player.new($name.sample)
+        if @players_left - @enemies_in_sight.count == 1
+          @enemies_in_sight << Player.new($name.sample)
+          puts "Un nouvel ennemie arrive"
+        else
+          numerous_enemies = 2
+          numerous_enemies.times do |i|
+          @enemies_in_sight << Player.new($name.sample)
+          end  
         end
         puts "#{numerous_enemies} nouveaux ennemies arrivent"
       end
