@@ -1,4 +1,4 @@
-## Programme Ruby : Mini_jeu_poo
+# The Hacking Project - Semaine 3 - Mardi
 
 ### App.rb
 Le jeu se déroule sans aucune interaction de l'utilisateur
